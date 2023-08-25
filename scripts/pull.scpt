@@ -1,11 +1,17 @@
 tell application "System Events"
-	tell process "Grammarly"
-                set visible to true
-		set frontmost to true
-
-                click menu item "Select All" of menu "Edit" of menu bar 1
-		click menu item "Cut" of menu "Edit" of menu bar 1
-       		display notification "" with title "Emacs Grammarly" subtitle "Pull" sound name "Pop"
+	tell application "Safari Technology Preview"
+                repeat with t in tabs of windows
+                    set tabName to name of t
+                    if tabName is "Emacs - Grammarly" then
+                        set current tab of (windows whose tabs contains t) to t
+                        set index of (windows whose tabs contains t) to 1 
+                        activate
+                        tell application "System Events" to keystroke "a" using command down
+                        tell application "System Events" to keystroke "x" using command down
+                        display notification "" with title "Emacs Grammarly" subtitle "Pulled" sound name "Pop"
+                        exit repeat
+                    end if
+                end repeat
 	end tell
 end tell
 
@@ -14,4 +20,5 @@ tell application "System Events"
 		set frontmost to true
         end tell
 end tell
+
 delay 0.1
